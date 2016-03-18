@@ -14,6 +14,8 @@
 		840E2C771C9B1AF300FE7E3B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 840E2C751C9B1AF300FE7E3B /* Main.storyboard */; };
 		840E2C791C9B1AF300FE7E3B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 840E2C781C9B1AF300FE7E3B /* Assets.xcassets */; };
 		840E2C7C1C9B1AF300FE7E3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 840E2C7A1C9B1AF300FE7E3B /* LaunchScreen.storyboard */; };
+		840E2C851C9B1D6000FE7E3B /* FlickrAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 840E2C841C9B1D6000FE7E3B /* FlickrAPI.m */; };
+		840E2CAB1C9C57A200FE7E3B /* LocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 840E2CAA1C9C57A200FE7E3B /* LocationManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,10 @@
 		840E2C781C9B1AF300FE7E3B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		840E2C7B1C9B1AF300FE7E3B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		840E2C7D1C9B1AF300FE7E3B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		840E2C831C9B1D6000FE7E3B /* FlickrAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrAPI.h; sourceTree = "<group>"; };
+		840E2C841C9B1D6000FE7E3B /* FlickrAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrAPI.m; sourceTree = "<group>"; };
+		840E2CA91C9C57A200FE7E3B /* LocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationManager.h; sourceTree = "<group>"; };
+		840E2CAA1C9C57A200FE7E3B /* LocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationManager.m; sourceTree = "<group>"; };
 		BB40261B3A8C89C8CD51F037 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		F594EFF681C7262793D46DB3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,7 +81,11 @@
 			isa = PBXGroup;
 			children = (
 				840E2C6F1C9B1AF300FE7E3B /* AppDelegate.h */,
+				840E2CA91C9C57A200FE7E3B /* LocationManager.h */,
+				840E2CAA1C9C57A200FE7E3B /* LocationManager.m */,
 				840E2C701C9B1AF300FE7E3B /* AppDelegate.m */,
+				840E2C831C9B1D6000FE7E3B /* FlickrAPI.h */,
+				840E2C841C9B1D6000FE7E3B /* FlickrAPI.m */,
 				840E2C721C9B1AF300FE7E3B /* ViewController.h */,
 				840E2C731C9B1AF300FE7E3B /* ViewController.m */,
 				840E2C751C9B1AF300FE7E3B /* Main.storyboard */,
@@ -226,8 +236,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				840E2C741C9B1AF300FE7E3B /* ViewController.m in Sources */,
+				840E2CAB1C9C57A200FE7E3B /* LocationManager.m in Sources */,
 				840E2C711C9B1AF300FE7E3B /* AppDelegate.m in Sources */,
 				840E2C6E1C9B1AF300FE7E3B /* main.m in Sources */,
+				840E2C851C9B1D6000FE7E3B /* FlickrAPI.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
