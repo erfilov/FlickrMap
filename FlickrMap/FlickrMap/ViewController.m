@@ -1,5 +1,8 @@
 #import "ViewController.h"
 #import <AFNetworking/AFNetworking.h>
+#import "LocationManager.h"
+#import "ImageTableVC.h"
+#import "FlickrPhoto.h"
 
 
 static NSString *const kFlickrAPIKey                    = @"99ebbf2885ed731a2dbed15ab554771a";
@@ -22,8 +25,12 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 
 
 
-@interface ViewController ()
+@interface ViewController () <UITextFieldDelegate>
 @property (strong, nonatomic) AFHTTPSessionManager *sessionManager;
+@property (strong, nonatomic) IBOutlet UITextField *searchTextField;
+- (IBAction)actionSearch:(UIButton *)sender;
+@property (copy, nonatomic) NSString *searchText;
+
 @end
 
 @implementation ViewController
@@ -32,22 +39,36 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 {
     [super viewDidLoad];
     
+    [[LocationManager sharedInstance]
+        startUpdatingLocationWithCompletionBlock:^(CLLocation *location, NSError *error) {
+
+            NSLog(@"location - %@", location);
+        
+    }];
 
     
     self.sessionManager = [AFHTTPSessionManager manager];
-    [self request];
 }
 
-
-
-- (void)request
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    NSString *text = @"beauty";
-
-
+    if (self.searchTextField) {
+        [self.searchTextField resignFirstResponder];
+        [self requestWithText:self.searchTextField.text];
+    }
+    return NO;
     
-    
-    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@&%@%@&%@&text=nature",
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    NSLog(@"%@", string);
+    return YES;
+}
+
+- (void)requestWithText:(NSString *)text
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@&%@%@&%@&text=%@",
                            kFlickrBaseRESTURL,
                            kFlickrPhotosFlickrSearchMethod,
                            kFlickrJSONFormat,
@@ -56,32 +77,52 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
                            kPhotosFlickrExtras,
                            kFlickrPerPageParameter,
                            kFlickrPhotosMaxPhotosToRetrieve,
-                           kFlickrPhotosFlickrNoJSONCallback];
-    
-    NSLog(@"%@", urlString);
-    
-    __block NSError *error = nil;
+                           kFlickrPhotosFlickrNoJSONCallback,
+                           text];
     
     
-   
     
+    ImageTableVC *imageVC = [self.storyboard instantiateViewControllerWithIdentifier:@"ImageTableVC"];
+
     [self.sessionManager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
+        
+        NSLog(@"responseObject - %@", responseObject);
+        imageVC.images = [self generateArrayUrlFromResponseObject:responseObject];
+        NSLog(@"%@", imageVC.images);
+        [self presentViewController:imageVC animated:YES completion:NULL];
+    
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
-    
-    
-    
-   
-    
+}
 
+
+- (NSArray *)generateArrayUrlFromResponseObject:(id)responseObject
+{
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    NSDictionary *dict = responseObject[@"photos"];
+    NSArray *photos = dict[@"photo"];
     
     
+    [photos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if (obj != nil) {
+            FlickrPhoto *photo = [[FlickrPhoto alloc] init];
+            photo.thumbnailImageUrl = obj[@"url_t"];
+            photo.title = obj[@"title"];
+            
+            [result addObject:photo];
+        }
+        
+        
+    }];
     
+    return result;
 }
 
 
 
-
+- (IBAction)actionSearch:(UIButton *)sender {
+    [self requestWithText:self.searchTextField.text];
+}
 @end
