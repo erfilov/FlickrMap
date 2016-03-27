@@ -1,5 +1,5 @@
 #import "AppDelegate.h"
-
+#import "LocationManager.h"
 @interface AppDelegate ()
 
 @end
@@ -9,7 +9,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-
+     
+    
+    
+    
     return YES;
 }
 
