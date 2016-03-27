@@ -57,12 +57,6 @@
     
 }
 
-//- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-//{
-//    return YES;
-//}
-
-
 #pragma mark - Methods
 
 - (NSString *)convertToCorrectFormatText:(NSString *)text
@@ -91,7 +85,7 @@
         
         photoCollectionVC.photos = [self generateArrayUrlFromResponseObject:result];
         photoCollectionVC.sessionManager = self.sessionManager;
-        photoCollectionVC.titleNavController = string;
+        photoCollectionVC.titleNavController = self.searchText;
         [self.loadingView hideLoadingView];
         [self.navigationController pushViewController:photoCollectionVC animated:YES];
         
@@ -111,6 +105,10 @@
             photo.thumbImageUrl = obj[@"url_t"];
             photo.bigImageURL = obj[@"url_m"];
             photo.title = obj[@"title"];
+            float latitude = [obj[@"latitude"] floatValue];
+            float longitude = [obj[@"longitude"] floatValue];
+            photo.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+            photo.photoID = obj[@"id"];
             
             [result addObject:photo];
         }
@@ -125,7 +123,10 @@
 #pragma mark - Actions
 
 - (IBAction)actionSearch:(UIButton *)sender {
+    
+
     self.searchText = self.searchTextField.text;
+    
     NSString *requestString = [self convertToCorrectFormatText:self.searchTextField.text];
     [self getImagesForText:requestString];
 }

@@ -15,4 +15,10 @@ typedef void(^CompletionBlock)(NSDictionary *result, NSError *error);
 - (void)requestWithText:(NSString *)text
     withCompletionBlock:(CompletionBlock)completionBlock;
 
+- (void)loadInfoForPhotoID:(NSString *)photoID
+     withCompletionBlock:(CompletionBlock)completionBlock;
+
+- (void)loadExifForPhotoID:(NSString *)photoID
+     withCompletionBlock:(CompletionBlock)completionBlock;
+
 @end

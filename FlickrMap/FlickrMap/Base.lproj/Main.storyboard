@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="fzs-CR-ycU">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="fzs-CR-ycU">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <scenes>
         <!--Flickrmap-->
@@ -88,6 +88,7 @@
         <!--Navigation Controller-->
         <scene sceneID="3ZA-aT-nBU">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Duw-sb-pDz" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController id="lfP-UE-jHa" sceneMemberID="viewController">
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fh5-8Z-P0F">
@@ -95,10 +96,9 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="ExV-z0-5J2" kind="relationship" relationship="rootViewController" id="2bM-CH-wwo"/>
+                        <segue destination="ExV-z0-5J2" kind="relationship" relationship="rootViewController" id="cew-hn-gIZ"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Duw-sb-pDz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="546" y="1461"/>
         </scene>
@@ -166,12 +166,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ga7-GG-hmZ">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ga7-GG-hmZ">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="mFW-gD-jyN" firstAttribute="top" secondItem="Ga7-GG-hmZ" secondAttribute="bottom" id="Gbr-M3-i0y"/>
+                            <constraint firstItem="Ga7-GG-hmZ" firstAttribute="leading" secondItem="B5Q-Kc-bYD" secondAttribute="leading" id="KOY-Rj-4EI"/>
+                            <constraint firstAttribute="trailing" secondItem="Ga7-GG-hmZ" secondAttribute="trailing" id="RO5-uK-frg"/>
+                            <constraint firstItem="Ga7-GG-hmZ" firstAttribute="top" secondItem="o5w-xr-bmd" secondAttribute="bottom" id="Vhc-xl-KlR"/>
+                            <constraint firstItem="Ga7-GG-hmZ" firstAttribute="top" secondItem="o5w-xr-bmd" secondAttribute="bottom" id="dVD-6T-AFN"/>
+                            <constraint firstItem="Ga7-GG-hmZ" firstAttribute="leading" secondItem="B5Q-Kc-bYD" secondAttribute="leading" id="e17-EI-FEy"/>
+                            <constraint firstItem="mFW-gD-jyN" firstAttribute="top" secondItem="Ga7-GG-hmZ" secondAttribute="bottom" id="hwg-d4-lVg"/>
+                            <constraint firstAttribute="trailing" secondItem="Ga7-GG-hmZ" secondAttribute="trailing" id="vlI-8G-wt6"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
@@ -181,6 +191,36 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MzU-wg-adv" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1349" y="1461"/>
+        </scene>
+        <!--About PhotoVC-->
+        <scene sceneID="zi6-8i-rhS">
+            <objects>
+                <viewController storyboardIdentifier="AboutPhotoVC" id="u3F-x6-XWe" customClass="AboutPhotoVC" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="kUU-bu-Rrc"/>
+                        <viewControllerLayoutGuide type="bottom" id="7aZ-SK-Wdy"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="1oU-c0-SE4">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Xmf-WU-t8Y">
+                                <rect key="frame" x="0.0" y="334" width="320" height="234"/>
+                                <connections>
+                                    <outlet property="delegate" destination="u3F-x6-XWe" id="RUW-b8-TdK"/>
+                                </connections>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+                    <connections>
+                        <outlet property="mapView" destination="Xmf-WU-t8Y" id="jNh-fp-NNS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hnn-di-997" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1785" y="1461"/>
         </scene>
         <!--Item-->
         <scene sceneID="llV-1h-ENX">

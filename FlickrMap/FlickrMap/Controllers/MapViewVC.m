@@ -21,7 +21,6 @@
 
 
 static NSString *const kFlickrAPIKey                    = @"99ebbf2885ed731a2dbed15ab554771a";
-//static NSString *const secret = @"0727051505b5afb1";
 static NSString *const kFlickrBaseRESTURL               = @"https://api.flickr.com/services/rest/?method=";
 static NSString *const kFlickrPhotosSearchMethod  = @"flickr.photos.search";
 static NSString *const kFlickrJSONFormat                = @"format=json";
@@ -41,6 +40,8 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 
 
 @implementation MapViewVC
+
+#pragma mark - Object lifecycle
 
 - (void)viewDidLoad
 {

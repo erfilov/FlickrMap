@@ -7,6 +7,8 @@
 static NSString *const kFlickrAPIKey                        = @"99ebbf2885ed731a2dbed15ab554771a";
 static NSString *const kFlickrBaseRESTURL                   = @"https://api.flickr.com/services/rest/?method=";
 static NSString *const kFlickrPhotosSearchMethod            = @"flickr.photos.search";
+static NSString *const kFlickrPhotosGetExifMethod           = @"flickr.photos.getExif";
+static NSString *const kFlickrPhotosGetInfoMethod           = @"flickr.photos.getInfo";
 static NSString *const kFlickrJSONFormat                    = @"format=json";
 static NSString *const kFlickrApiKeyParameter               = @"api_key";
 static NSString *const kFlickrLatitudeParameter             = @"lat=";
@@ -15,6 +17,7 @@ static NSString *const kFlickrBoundingBoxParameter          = @"bbox";
 static NSString *const kFlickrPhotosExtras                  = @"extras=geo,url_t,url_o,url_m";
 static NSString *const kFlickrPhotosRadiusParameter         = @"radius=";
 static NSString *const kFlickrPhotosRadiusUnitParameter     = @"radius_units=km";
+static NSString *const kFlickrPhotoIDParameter              = @"photo_id=";
 static NSString *const kFlickrPerPageParameter              = @"per_page=";
 static NSString *const kFlickrPhotosMaxPhotosToRetrieve     = @"500";
 static NSString *const kFlickrPhotoHasGeoParameter          = @"has_geo=";
@@ -30,6 +33,8 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
 
 
 @implementation FlickrAPI
+
+#pragma mark - Object lifecycle
 
 - (instancetype)init
 {
@@ -59,8 +64,6 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrPerPageParameter, kFlickrPhotosMaxPhotosToRetrieve,
                            kFlickrPhotoHasGeoParameter, kFlickrPhotoHasGeoEnable,
                            kFlickrPhotosFlickrNoJSONCallback];
-    
-    NSLog(@"%@", urlString);
     
     [self.sessionManager.manager GET:urlString
                           parameters:nil
@@ -94,11 +97,34 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrPhotosFlickrNoJSONCallback,
                            text];
     
+    NSLog(@"%@", urlString);
     
+    [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        
+        if (responseObject != nil) {
+            completionBlock(responseObject, nil);
+        }
+
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionBlock(nil, error);
+    }];
+}
+
+- (void)loadInfoForPhotoID:(NSString *)photoID
+    withCompletionBlock:(CompletionBlock)completionBlock
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@=%@&%@",
+                           kFlickrBaseRESTURL,
+                           kFlickrPhotosGetInfoMethod,
+                           kFlickrJSONFormat,
+                           kFlickrApiKeyParameter,
+                           kFlickrAPIKey,
+                           kFlickrPhotoIDParameter,
+                           photoID,
+                           kFlickrPhotosFlickrNoJSONCallback];
     
-//FlickrPhotoCollectionVC *photoCollectionVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FlickrPhotoCollectionVC"];
-    
-    
+    NSLog(@"%@", urlString);
     
     [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
@@ -106,21 +132,39 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
             completionBlock(responseObject, nil);
         }
         
-        //NSLog(@"responseObject - %@", responseObject);
-        
-        
-        //photoCollectionVC.photos = [self generateArrayUrlFromResponseObject:responseObject];
-        
-        //[self.navigationController pushViewController:photoCollectionVC animated:YES];
-        
     } failure:^(NSURLSessionTask *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         completionBlock(nil, error);
     }];
 }
 
+- (void)loadExifForPhotoID:(NSString *)photoID
+     withCompletionBlock:(CompletionBlock)completionBlock
+{
+    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@=%@&%@",
+                           kFlickrBaseRESTURL,
+                           kFlickrPhotosGetExifMethod,
+                           kFlickrJSONFormat,
+                           kFlickrApiKeyParameter,
+                           kFlickrAPIKey,
+                           kFlickrPhotoIDParameter,
+                           photoID,
+                           kFlickrPhotosFlickrNoJSONCallback];
+    
+    NSLog(@"%@", urlString);
+    
+    [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
+        
+        if (responseObject != nil) {
+            completionBlock(responseObject, nil);
+        }
+        
+    } failure:^(NSURLSessionTask *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+        completionBlock(nil, error);
+    }];
 
-
+}
 
 
 

@@ -9,85 +9,83 @@
 typedef void(^CompletionBlockWithImage)(UIImage *image, NSError *error);
 
 @interface FlickrPhotoCollectionVC () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate>
-@property (strong, nonatomic) NSMutableDictionary<NSString *, UIImage *> *images;
-//@property (strong, nonatomic) UIView *loadingView;
-//@property (strong, nonatomic) UIActivityIndicatorView *activityIndicator;
+@property (strong, nonatomic) NSDictionary<NSString *, FlickrPhoto *> *flickrPhotos;
 @property (strong, nonatomic) FlickrPhotoDetailVC *photoDetailVC;
 @property (strong, nonatomic) LoadingView *loadingView;
+@property (strong, nonatomic) FlickrPhoto *currentPhoto;
 @end
-
-
-
-
 
 @implementation FlickrPhotoCollectionVC
 
 static NSString * const reuseIdentifier = @"FlickrPhotoCell";
 
+#pragma mark - Object lifecycle
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.loadingView = [[LoadingView alloc] init];
-    self.images = [[NSMutableDictionary alloc] init];
+    self.flickrPhotos = [[NSDictionary alloc] init];
     self.photoDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FlickrPhotoDetailVC"];
     self.title = [NSString stringWithFormat:@"#%@", self.titleNavController];
 
-    
+    self.flickrPhotos = [self fillDictionaryFromArray:self.photos];
 }
-
 
 
 #pragma mark - UICollectionViewDataSource
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
     return 1;
 }
 
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return [self.photos count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
     
     FlickrPhotoCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    FlickrPhoto *photo = self.photos[indexPath.row];
-    cell.photo = photo;
-    [cell setImageUrl:[NSURL URLWithString:photo.thumbImageUrl]];
+    self.currentPhoto = self.photos[indexPath.row];
+    cell.photo = self.currentPhoto;
+    
+    [cell setImageUrl:[NSURL URLWithString:self.currentPhoto.thumbImageUrl]];
+
+    self.photoDetailVC.cellIndex = indexPath.row;
 
 
     return cell;
 }
-
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"didSelectItemAtIndexPath");
-
-    
-    
-
-}
-
-
-#pragma mark - Methods
-
-
+ 
 
 #pragma mark - Navigation
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        
-        NSLog(@"prepareForSegue");
-    
         self.photoDetailVC = segue.destinationViewController;
         FlickrPhotoCollectionViewCell *cell = sender;
-        self.photoDetailVC.image = cell.imageView.image;
+        cell.photo.cashedThumbImage = cell.imageView.image;
+        //self.photoDetailVC.image = cell.imageView.image;
         self.photoDetailVC.photo = cell.photo;
-        self.photoDetailVC.sessionManager = self.sessionManager;
+        self.photoDetailVC.photos = self.flickrPhotos;
+
         
     }
 }
 
+#pragma mark - Methods
+
+- (NSDictionary *)fillDictionaryFromArray:(NSArray *)objects
+{
+    NSMutableDictionary *tempDict = [[NSMutableDictionary alloc] initWithCapacity:[objects count]];
+    [objects enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [tempDict setObject:obj forKey:[NSString stringWithFormat:@"%d", (NSInteger)idx]];
+    }];
+    return tempDict;
+}
 
 
 

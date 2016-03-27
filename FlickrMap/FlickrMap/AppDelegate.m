@@ -1,5 +1,7 @@
 #import "AppDelegate.h"
 #import "LocationManager.h"
+#import "AppearanceCustomization.h"
+
 @interface AppDelegate ()
 
 @end
@@ -9,10 +11,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-     
-    
-    
-    
+    [[AppearanceCustomization new] applyGeneralCustomizations];
     return YES;
 }
 
