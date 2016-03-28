@@ -20,6 +20,7 @@ static NSString *const kFlickrPhotosRadiusUnitParameter     = @"radius_units=km"
 static NSString *const kFlickrPhotoIDParameter              = @"photo_id=";
 static NSString *const kFlickrPerPageParameter              = @"per_page=";
 static NSString *const kFlickrPhotosMaxPhotosToRetrieve     = @"500";
+static NSString *const kFlickrPhotosMaxPhotosForMap         = @"100";
 static NSString *const kFlickrPhotoHasGeoParameter          = @"has_geo=";
 static NSString *const kFlickrPhotoHasGeoEnable             = @"1";
 static NSString *const kFlickrPhotosResponseParamPhotos     = @"photos";
@@ -53,7 +54,7 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
 
 {
     
-    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@=%f,%f,%f,%f&%@&%@%@&%@%@&%@",
+    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@=%f,%f,%f,%f&%@&%@%@&%@",
                            kFlickrBaseRESTURL,
                            kFlickrPhotosSearchMethod,
                            kFlickrJSONFormat,
@@ -61,9 +62,9 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrBoundingBoxParameter,
                            bottomLeft.longitude, bottomLeft.latitude, topRight.longitude, topRight.latitude,
                            kFlickrPhotosExtras,
-                           kFlickrPerPageParameter, kFlickrPhotosMaxPhotosToRetrieve,
-                           kFlickrPhotoHasGeoParameter, kFlickrPhotoHasGeoEnable,
+                           kFlickrPerPageParameter, kFlickrPhotosMaxPhotosForMap,
                            kFlickrPhotosFlickrNoJSONCallback];
+    
     
     [self.sessionManager.manager GET:urlString
                           parameters:nil

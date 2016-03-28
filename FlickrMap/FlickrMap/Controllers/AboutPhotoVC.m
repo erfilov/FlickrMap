@@ -10,11 +10,13 @@
 
 @implementation AboutPhotoVC
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     [self addAnnotation];
     [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(self.mapAnnotation.coordinate, 15000, 15000)];
+    
 }
 
 - (void)addAnnotation
@@ -53,5 +55,10 @@
 
 }
 
+#pragma mark - Actions
 
+- (IBAction)actionClose:(UIBarButtonItem *)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 @end

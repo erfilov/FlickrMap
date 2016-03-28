@@ -79,6 +79,7 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
                     <connections>
                         <outlet property="mapView" destination="hNe-4M-LZS" id="wq9-to-QwM"/>
+                        <segue destination="eA4-QW-dRq" kind="show" identifier="showPhotoDetailFromMap" id="72X-W4-2er"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lWs-Kk-qEv" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -210,6 +211,18 @@
                                     <outlet property="delegate" destination="u3F-x6-XWe" id="RUW-b8-TdK"/>
                                 </connections>
                             </mapView>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xNn-Sc-j5a">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                <items>
+                                    <navigationItem id="F2F-Te-qk7">
+                                        <barButtonItem key="rightBarButtonItem" style="done" systemItem="stop" id="VZC-FV-QsI">
+                                            <connections>
+                                                <action selector="actionClose:" destination="u3F-x6-XWe" id="NsA-eB-rZZ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -282,4 +295,7 @@
     <resources>
         <image name="map_icon" width="48" height="32"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="72X-W4-2er"/>
+    </inferredMetricsTieBreakers>
 </document>

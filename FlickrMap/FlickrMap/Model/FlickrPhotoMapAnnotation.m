@@ -1,5 +1,6 @@
 #import "FlickrPhotoMapAnnotation.h"
-#import "SessionManager.h"
+#import "UIImageView+AFNetworking.h"
+#import "FlickrPhoto.h"
 
 @implementation FlickrPhotoMapAnnotation
 
@@ -8,29 +9,21 @@
     self = [super init];
     if (self) {
         
-        
+        self.photo = [[FlickrPhoto alloc] init];
         float latitude = [dictionary[@"latitude"] floatValue];
         float longitude = [dictionary[@"longitude"] floatValue];
-        self.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-        self.title = dictionary[@"title"];
+        self.photo.coordinate = self.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+        self.photo.title = self.title = dictionary[@"title"];
+        
         
         if (dictionary[@"url_t"]) {
-            self.thumbImageUrl = dictionary[@"url_t"];
-            
-            [[SessionManager sharedManager] loadImageFromURL:self.thumbImageUrl withCompletionBlock:^(UIImage *image, NSError *error) {
-                
-                self.cashedThumbImage = image;
-            
-            }];
-        
+            self.photo.thumbImageUrl = self.thumbImageUrl = dictionary[@"url_t"];
+            UIImageView *imageView = [[UIImageView alloc] init];
+            [imageView setImageWithURL:[NSURL URLWithString:self.thumbImageUrl] placeholderImage:[UIImage imageNamed:@"placeholder_image"]];
+            self.photo.cashedThumbImage = self.cashedThumbImage = imageView.image;
         }
         
-        if (!self.cashedThumbImage) {
-            self.cashedThumbImage = [UIImage imageNamed:@"unknown_image"];
-        
-        }
-        
-        self.bigImageURL = dictionary[@"url_m"];
+        self.photo.bigImageURL = self.bigImageURL = dictionary[@"url_m"];
 
     }
     return self;

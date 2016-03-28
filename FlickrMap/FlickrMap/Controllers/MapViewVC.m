@@ -5,8 +5,8 @@
 #import "FlickrPhoto.h"
 #import "FlickrPhotoMapAnnotation.h"
 #import "UIImageView+AFNetworking.h"
-#import "SessionManager.h"
 #import "FlickrAPI.h"
+#import "FlickrPhotoDetailVC.h"
 
 @interface MapViewVC () <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
@@ -17,25 +17,9 @@
 @property (strong, nonatomic) SessionManager *sessionManager;
 @property (strong, nonatomic) NSMutableDictionary *dict;
 @property (copy, nonatomic) NSArray<FlickrPhotoMapAnnotation *> *mapAnnotations;
+@property (strong, nonatomic) FlickrPhotoDetailVC *photoDetailVC;
 @end
 
-
-static NSString *const kFlickrAPIKey                    = @"99ebbf2885ed731a2dbed15ab554771a";
-static NSString *const kFlickrBaseRESTURL               = @"https://api.flickr.com/services/rest/?method=";
-static NSString *const kFlickrPhotosSearchMethod  = @"flickr.photos.search";
-static NSString *const kFlickrJSONFormat                = @"format=json";
-static NSString *const kFlickrApiKeyParameter           = @"api_key";
-static NSString *const kFlickrLatitudeParameter         = @"lat=";
-static NSString *const kFlickrLongitudeParameter        = @"lon=";
-static NSString *const kFlickrBoundingBoxParameter      = @"bbox";
-static NSString *const kFlickrPhotosExtras              = @"extras=geo,url_t,url_o,url_m";
-static NSString *const kFlickrPhotosRadiusParameter           = @"radius=";
-static NSString *const kFlickrPhotosRadiusUnitParameter = @"radius_units=km";
-static NSString *const kFlickrPerPageParameter          = @"per_page=";
-static NSString *const kFlickrPhotosMaxPhotosToRetrieve = @"30";
-static NSString *const kFlickrPhotosResponseParamPhotos = @"photos";
-static NSString *const kFlickrPhotosResponseParamPhoto  = @"photo";
-static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 
 
 
@@ -46,9 +30,9 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.photoDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FlickrPhotoDetailVC"];
     self.vc = [[StartViewController alloc] init];
     [self.mapView setShowsUserLocation:YES];
-    self.sessionManager = [SessionManager sharedManager];
     self.flickrAPI = [[FlickrAPI alloc] init];
     self.mapAnnotations = [[NSArray alloc] init];
     
@@ -56,6 +40,7 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 
 
 }
+
 
 
 #pragma mark - MKMapViewDelegate
@@ -68,20 +53,16 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
     
     if (originalPhotoURL) {
         
-        [self.sessionManager loadImageFromURL:originalPhotoURL withCompletionBlock:^(UIImage *image, NSError *error) {
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                if (image != nil) {
-                    FlickrPhotoMapAnnotation *mapAnnotation = (FlickrPhotoMapAnnotation *)view.annotation;
-                    mapAnnotation.cashedBigImage = image;
-                    self.selectedFlickrPhoto = mapAnnotation;
-                    //[self performSegueWithIdentifier:@"Show detail" sender:nil];
-                }
-                
-            });
+        FlickrPhotoMapAnnotation *mapAnnotation = (FlickrPhotoMapAnnotation *)view.annotation;
+        UIImageView *imageView = [[UIImageView alloc] init];
+        [imageView setImageWithURL:[NSURL URLWithString:originalPhotoURL] placeholderImage:[UIImage imageNamed:@"placeholder_image"]];
         
-        }];
+        mapAnnotation.photo.cashedBigImage = mapAnnotation.cashedBigImage = imageView.image;
+        [self performSegueWithIdentifier:@"showPhotoDetailFromMap" sender:mapAnnotation];
+        
+        //self.selectedFlickrPhoto = mapAnnotation;
+        
+
         
     }
 }
@@ -133,25 +114,20 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
     [self updateFlickrImagesInMap];
 }
 
-- (void)updateFlickrImagesInMap {
-    
-    for (id<MKAnnotation> obj in self.mapView.annotations) {
-        if ([obj isKindOfClass:[FlickrPhotoMapAnnotation class]]) {
-            [self.mapView removeAnnotation:obj];
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if ([view.leftCalloutAccessoryView isKindOfClass:[UIButton class]]) {
+        if ([view.annotation isKindOfClass:[FlickrPhotoMapAnnotation class]]) {
+            FlickrPhotoMapAnnotation *mapAnnotation = (FlickrPhotoMapAnnotation *)view.annotation;
+            UIImage *image = mapAnnotation.cashedThumbImage;
+            UIButton *entryButton = (UIButton *)view.leftCalloutAccessoryView;
+            [entryButton setImage:image forState:UIControlStateNormal];
+            [entryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
         }
     }
-
-    [self.flickrAPI loadImagesFromLocationBL:[self getBottomLeftCornerOfMap]
-                                toLocationTR:[self getTopRightCornerOfMap]
-                         withCompletionBlock:^(id result, NSError *error) {
-                             
-                             if ([result isKindOfClass:[NSDictionary class]]) {
-                                 
-                                 [self generateMapAnnotationsForEntries:result];
-                             }
-                             
-                         }];
 }
+
+
+
 
 
 
@@ -163,11 +139,9 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 }
 
 
-- (IBAction)sendRequest:(UIButton *)sender {
+- (IBAction)sendRequest:(UIButton *)sender
+{
     NSLog(@"sendRequest");
-    
-    
-    
 }
 
 
@@ -190,17 +164,31 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
     
     [self.mapView addAnnotations:annotations];
     [self.mapView setNeedsDisplay];
-//    self.mapAnnotations = annotations;
+}
+
+- (void)updateFlickrImagesInMap {
+    
+    for (id<MKAnnotation> obj in self.mapView.annotations) {
+        if ([obj isKindOfClass:[FlickrPhotoMapAnnotation class]]) {
+            [self.mapView removeAnnotation:obj];
+        }
+    }
+    
+    [self.flickrAPI loadImagesFromLocationBL:[self getBottomLeftCornerOfMap]
+                                toLocationTR:[self getTopRightCornerOfMap]
+                         withCompletionBlock:^(id result, NSError *error) {
+                             
+                             if ([result isKindOfClass:[NSDictionary class]] && result != nil) {
+                                 
+                                 [self generateMapAnnotationsForEntries:result];
+                             } else {
+                                 self.mapAnnotations = @[];
+                             }
+                             
+                         }];
 }
 
 
-
-//- (void)addAnnotationFromArray:(NSArray *)annotations
-//{
-//    [annotations enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-//        [self.mapView addAnnotation:obj];
-//    }];
-//}
 
 
 - (CLLocationCoordinate2D) getBottomLeftCornerOfMap {
@@ -210,5 +198,18 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback = @"nojsoncallback=1";
 - (CLLocationCoordinate2D) getTopRightCornerOfMap {
     return [self.mapView convertPoint:CGPointMake(self.mapView.frame.size.width, 0) toCoordinateFromView:self.mapView];
 }
+
+#pragma mark - Navigations
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"showPhotoDetailFromMap"]) {
+        self.photoDetailVC = segue.destinationViewController;
+        FlickrPhotoMapAnnotation *mapAnnotation = sender;
+        self.photoDetailVC.photo = mapAnnotation.photo;
+    }
+}
+
+
 
 @end
