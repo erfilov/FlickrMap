@@ -11,7 +11,6 @@
 @interface MapViewVC () <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (strong, nonatomic) LocationManager *locationManager;
-- (IBAction)sendRequest:(UIButton *)sender;
 @property (strong, nonatomic) StartViewController *vc;
 @property (strong, nonatomic) FlickrAPI *flickrAPI;
 @property (strong, nonatomic) SessionManager *sessionManager;
@@ -136,12 +135,6 @@
 - (void)actionInfo:(UIButton *)sender
 {
     NSLog(@"actionInfo");
-}
-
-
-- (IBAction)sendRequest:(UIButton *)sender
-{
-    NSLog(@"sendRequest");
 }
 
 

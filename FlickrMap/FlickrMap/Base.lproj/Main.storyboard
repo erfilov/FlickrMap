@@ -64,13 +64,6 @@
                                     <outlet property="delegate" destination="Pc5-vC-AHR" id="4YZ-OA-Hib"/>
                                 </connections>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0bl-bk-4kR">
-                                <rect key="frame" x="137" y="72" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="sendRequest:" destination="Pc5-vC-AHR" eventType="touchUpInside" id="F5O-7X-Cf8"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
