@@ -79,23 +79,6 @@
             </objects>
             <point key="canvasLocation" x="939" y="703"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="3ZA-aT-nBU">
-            <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Duw-sb-pDz" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController id="lfP-UE-jHa" sceneMemberID="viewController">
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Fh5-8Z-P0F">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="ExV-z0-5J2" kind="relationship" relationship="rootViewController" id="cew-hn-gIZ"/>
-                    </connections>
-                </navigationController>
-            </objects>
-            <point key="canvasLocation" x="546" y="1461"/>
-        </scene>
         <!--Flickr Photo CollectionVC-->
         <scene sceneID="Aju-Oz-Oec">
             <objects>
@@ -112,14 +95,14 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="FlickrPhotoCell" id="jJ5-N8-Lce" customClass="FlickrPhotoCollectionViewCell">
-                                <rect key="frame" x="0.0" y="64" width="100" height="100"/>
+                                <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2cl-ia-Uj3">
-                                            <rect key="frame" x="8" y="8" width="84" height="84"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2cl-ia-Uj3">
+                                            <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
                                         </imageView>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -289,6 +272,6 @@
         <image name="map_icon" width="48" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="72X-W4-2er"/>
+        <segue reference="l32-ND-L4F"/>
     </inferredMetricsTieBreakers>
 </document>
