@@ -11,6 +11,7 @@
     return [UIColor blackColor];
 }
 
+
 + (UIColor *)whiteColor {
     return [UIColor whiteColor];
 }
@@ -28,8 +29,6 @@
     UITabBar *appearance = [UITabBar appearance];
     [appearance setBarTintColor:[AppearanceCustomization blackColor]];
     [appearance setTintColor:[AppearanceCustomization whiteColor]];
-    
-    //appearance.titleTextAttributes = @{NSForegroundColorAttributeName : [AppearanceCustomization whiteColor]};
 }
 
 - (void)applyGeneralCustomizations {

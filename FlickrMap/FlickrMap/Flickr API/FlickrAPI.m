@@ -17,7 +17,7 @@ static NSString *const kFlickrBoundingBoxParameter          = @"bbox";
 static NSString *const kFlickrPhotosExtras                  = @"extras=geo,url_t,url_o,url_m";
 static NSString *const kFlickrPhotosRadiusParameter         = @"radius=";
 static NSString *const kFlickrPhotosRadiusUnitParameter     = @"radius_units=km";
-static NSString *const kFlickrPhotoIDParameter              = @"photo_id=";
+static NSString *const kFlickrPhotoIDParameter              = @"photo_id";
 static NSString *const kFlickrPerPageParameter              = @"per_page=";
 static NSString *const kFlickrPhotosMaxPhotosToRetrieve     = @"500";
 static NSString *const kFlickrPhotosMaxPhotosForMap         = @"100";
@@ -97,7 +97,6 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrPhotoHasGeoParameter, kFlickrPhotoHasGeoEnable,
                            kFlickrPhotosFlickrNoJSONCallback,
                            text];
-    
     NSLog(@"%@", urlString);
     
     [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
@@ -125,7 +124,7 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            photoID,
                            kFlickrPhotosFlickrNoJSONCallback];
     
-    NSLog(@"%@", urlString);
+    
     
     [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         

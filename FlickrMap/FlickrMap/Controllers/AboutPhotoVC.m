@@ -2,21 +2,72 @@
 #import <MapKit/MapKit.h>
 #import "FlickrPhoto.h"
 #import "FlickrPhotoMapAnnotation.h"
+#import "UIImageView+AFNetworking.h"
+
+#define kExposureTime       @"ExposureTime"
+#define kAperture           @"FNumber"
+#define kISO                @"ISO"
+#define kFlash              @"Flash"
+#define kFocalLength        @"FocalLength"
+#define kLensModel          @"LensModel"
+#define kCameraModel        @"camera"
 
 @interface AboutPhotoVC () <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) FlickrPhotoMapAnnotation *mapAnnotation;
+@property (strong, nonatomic) IBOutlet UILabel *authorName;
+@property (strong, nonatomic) IBOutlet UIImageView *buddyicon;
+
+@property (strong, nonatomic) IBOutlet UILabel *cameraModel;
+@property (strong, nonatomic) IBOutlet UILabel *cameraSubtitle;
+@property (strong, nonatomic) IBOutlet UILabel *apertureLabel;
+@property (strong, nonatomic) IBOutlet UILabel *exposureLabel;
+@property (strong, nonatomic) IBOutlet UILabel *isoLabel;
+@property (strong, nonatomic) IBOutlet UILabel *flashLabel;
+@property (strong, nonatomic) IBOutlet UILabel *focalLengthLabel;
+
 
 @end
 
 @implementation AboutPhotoVC
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self configureBuddyicon];
+    NSString *iconURL = [self.photo.author valueForKey:@"buddyicon_url"];
+    
+    [self.buddyicon setImageWithURL:[NSURL URLWithString:iconURL]
+                   placeholderImage:[UIImage imageNamed:@"placeholder-image"]];
+    
+    self.authorName.text = [self.photo.author valueForKey:@"author_name"];
+    
+
+    [self showExifInfo];
+    
     [self addAnnotation];
     [self.mapView setRegion:MKCoordinateRegionMakeWithDistance(self.mapAnnotation.coordinate, 15000, 15000)];
     
+}
+
+- (void)showExifInfo
+{
+    self.exposureLabel.text = [self.photo.exif valueForKey:kExposureTime] ? : @"n/a";
+    self.apertureLabel.text = [self.photo.exif valueForKey:kAperture] ? [NSString stringWithFormat:@"ƒ/%@", [self.photo.exif valueForKey:kAperture]] : @"n/a";
+    self.isoLabel.text = [self.photo.exif valueForKey:kISO] ? : @"n/a";
+    self.flashLabel.text = [self.photo.exif valueForKey:kFlash] ? : @"n/a";
+    self.focalLengthLabel.text = [self.photo.exif valueForKey:kFocalLength] ? : @"n/a";
+    self.cameraSubtitle.text = [self.photo.exif valueForKey:kLensModel] ? : @"n/a";
+    self.cameraModel.text = [self.photo.exif valueForKey:kCameraModel] ? : @"n/a";
+
+}
+
+- (void)configureBuddyicon
+{
+    self.buddyicon.layer.cornerRadius = CGRectGetWidth(self.buddyicon.frame) / 2;
+    self.buddyicon.layer.masksToBounds = NO;
+    self.buddyicon.clipsToBounds = YES;
 }
 
 - (void)addAnnotation

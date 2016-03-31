@@ -10,5 +10,6 @@
 @property (strong, nonatomic) UIImage *cashedThumbImage;
 @property (copy, nonatomic) NSString *bigImageURL;
 @property (strong, nonatomic) UIImage *cashedBigImage;
-
+@property (strong, nonatomic) NSDictionary *author;
+@property (strong, nonatomic) NSDictionary *exif;
 @end

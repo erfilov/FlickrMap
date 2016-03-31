@@ -6,7 +6,7 @@
 
 - (void)setImageUrl:(NSURL *)imageURL
 {
-    [self.imageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"placeholder_image"]];
+    [self.imageView setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"placeholder-image"]];
 }
 
 @end

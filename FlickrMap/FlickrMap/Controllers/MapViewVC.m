@@ -54,7 +54,7 @@
         
         FlickrPhotoMapAnnotation *mapAnnotation = (FlickrPhotoMapAnnotation *)view.annotation;
         UIImageView *imageView = [[UIImageView alloc] init];
-        [imageView setImageWithURL:[NSURL URLWithString:originalPhotoURL] placeholderImage:[UIImage imageNamed:@"placeholder_image"]];
+        [imageView setImageWithURL:[NSURL URLWithString:originalPhotoURL] placeholderImage:[UIImage imageNamed:@"placeholder-image"]];
         
         mapAnnotation.photo.cashedBigImage = mapAnnotation.cashedBigImage = imageView.image;
         [self performSegueWithIdentifier:@"showPhotoDetailFromMap" sender:mapAnnotation];

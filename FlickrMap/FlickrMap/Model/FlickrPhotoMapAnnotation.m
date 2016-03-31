@@ -19,11 +19,12 @@
         if (dictionary[@"url_t"]) {
             self.photo.thumbImageUrl = self.thumbImageUrl = dictionary[@"url_t"];
             UIImageView *imageView = [[UIImageView alloc] init];
-            [imageView setImageWithURL:[NSURL URLWithString:self.thumbImageUrl] placeholderImage:[UIImage imageNamed:@"placeholder_image"]];
+            [imageView setImageWithURL:[NSURL URLWithString:self.thumbImageUrl] placeholderImage:[UIImage imageNamed:@"placeholder-image"]];
             self.photo.cashedThumbImage = self.cashedThumbImage = imageView.image;
         }
         
         self.photo.bigImageURL = self.bigImageURL = dictionary[@"url_m"];
+        self.photo.photoID = dictionary[@"id"];
 
     }
     return self;
