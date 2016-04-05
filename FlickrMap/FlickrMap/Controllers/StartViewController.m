@@ -81,9 +81,9 @@
     
     FlickrPhotoCollectionVC *photoCollectionVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FlickrPhotoCollectionVC"];
     
-    [self.flickrAPI requestWithText:string withCompletionBlock:^(NSDictionary *result, NSError *error) {
+    [self.flickrAPI requestWithText:string page:1 withCompletionBlock:^(NSDictionary *result, NSError *error) {
         
-        photoCollectionVC.photos = [self generateArrayUrlFromResponseObject:result];
+        photoCollectionVC.photos = [self.flickrAPI generateArrayUrlFromResponseObject:result];
         photoCollectionVC.sessionManager = self.sessionManager;
         photoCollectionVC.titleNavController = self.searchText;
         [self.loadingView hideLoadingView];
@@ -91,36 +91,6 @@
         
     }];
 }
-
-- (NSArray *)generateArrayUrlFromResponseObject:(id)responseObject
-{
-    NSMutableArray *result = [[NSMutableArray alloc] init];
-    NSDictionary *dict = responseObject[@"photos"];
-    NSArray *photos = dict[@"photo"];
-    
-    [photos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
-        if (obj != nil) {
-            FlickrPhoto *photo = [[FlickrPhoto alloc] init];
-            photo.thumbImageUrl = obj[@"url_q"];
-            photo.bigImageURL = obj[@"url_m"];
-            photo.title = obj[@"title"];
-            float latitude = [obj[@"latitude"] floatValue];
-            float longitude = [obj[@"longitude"] floatValue];
-            photo.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-            photo.photoID = obj[@"id"];
-            
-            [result addObject:photo];
-        }
-        
-        
-    }];
-    
-    return result;
-}
-
-
-
 
 
 #pragma mark - Actions

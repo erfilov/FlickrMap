@@ -1,6 +1,7 @@
 #import "FlickrAPI.h"
 #import "LocationManager.h"
 #import "SessionManager.h"
+#import "FlickrPhoto.h"
 
 
 static NSString *const kFlickrAPIKey                        = @"99ebbf2885ed731a2dbed15ab554771a";
@@ -18,7 +19,7 @@ static NSString *const kFlickrPhotosRadiusParameter         = @"radius=";
 static NSString *const kFlickrPhotosRadiusUnitParameter     = @"radius_units=km";
 static NSString *const kFlickrPhotoIDParameter              = @"photo_id";
 static NSString *const kFlickrPerPageParameter              = @"per_page=";
-static NSString *const kFlickrPhotosMaxPhotosToRetrieve     = @"500";
+static NSString *const kFlickrPhotosMaxPhotosToRetrieve     = @"250";
 static NSString *const kFlickrPhotosMaxPhotosForMap         = @"100";
 static NSString *const kFlickrPhotoHasGeoParameter          = @"has_geo=";
 static NSString *const kFlickrPhotoHasGeoEnable             = @"1";
@@ -82,9 +83,10 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
 }
 
 - (void)requestWithText:(NSString *)text
+    page:(NSInteger)pageNumber
     withCompletionBlock:(CompletionBlock)completionBlock
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@&%@%@&%@%@&%@&text=%@",
+    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@&%@%@&%@%@&%@&page=%d&text=%@",
                            kFlickrBaseRESTURL,
                            kFlickrPhotosSearchMethod,
                            kFlickrJSONFormat,
@@ -95,6 +97,7 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrPhotosMaxPhotosToRetrieve,
                            kFlickrPhotoHasGeoParameter, kFlickrPhotoHasGeoEnable,
                            kFlickrPhotosFlickrNoJSONCallback,
+                           pageNumber,
                            text];
     NSLog(@"%@", urlString);
     
@@ -165,6 +168,33 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
 
 }
 
+
+- (NSArray *)generateArrayUrlFromResponseObject:(NSDictionary *)responseObject
+{
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    NSDictionary *dict = responseObject[@"photos"];
+    NSArray *photos = dict[@"photo"];
+    
+    [photos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+        if (obj != nil) {
+            FlickrPhoto *photo = [[FlickrPhoto alloc] init];
+            photo.thumbImageUrl = obj[@"url_q"];
+            photo.bigImageURL = obj[@"url_m"];
+            photo.title = obj[@"title"];
+            float latitude = [obj[@"latitude"] floatValue];
+            float longitude = [obj[@"longitude"] floatValue];
+            photo.coordinate = CLLocationCoordinate2DMake(latitude, longitude);
+            photo.photoID = obj[@"id"];
+            
+            [result addObject:photo];
+        }
+        
+        
+    }];
+    
+    return result;
+}
 
 
 @end
