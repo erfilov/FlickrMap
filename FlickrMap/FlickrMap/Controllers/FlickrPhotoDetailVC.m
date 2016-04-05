@@ -38,6 +38,7 @@
 {
     [super viewDidLoad];
     
+    self.sessionManager = [SessionManager sharedManager];
     self.flickrAPI = [[FlickrAPI alloc] init];
     self.loadingView = [[LoadingView alloc] init];
     UIImage *blurImage = [[UIImage alloc] init];
@@ -73,19 +74,25 @@
 - (void)loadBigImageFromURL:(NSString *)urlString
 {
     [self.loadingView showLoadingViewOnView:self.view];
-    self.tempImageView = [[UIImageView alloc] init];
-    [self.tempImageView setImageWithURL:[NSURL URLWithString:urlString]];
-    [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(showDownloadedImage) userInfo:nil repeats:NO];
     
+    self.tempImageView = [[UIImageView alloc] init];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:urlString]];
+    __weak typeof(self) weakSelf = self;
+    
+    [self.tempImageView setImageWithURLRequest:request
+        placeholderImage:nil
+        success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+            
+            weakSelf.fullScreenImage.image = image;
+            [weakSelf.loadingView hideLoadingView];
+        
+        } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
+            NSLog(@"error %@", [error localizedDescription]);
+        }];
+   
 
 }
 
-
-- (void)showDownloadedImage
-{
-    self.fullScreenImage.image = self.tempImageView.image;
-    [self.loadingView hideLoadingView];
-}
 
 - (void)getInfoForPhoto:(NSString *)photoID
 {
@@ -130,7 +137,6 @@
 {
     [self.flickrAPI loadExifForPhotoID:photoID withCompletionBlock:^(NSDictionary *result, NSError *error) {
         
-        NSLog(@"%@", result);
         [self generateExifFromDictionary:result];
         
     }];

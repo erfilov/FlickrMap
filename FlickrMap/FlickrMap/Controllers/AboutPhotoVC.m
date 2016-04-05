@@ -1,7 +1,6 @@
 #import "AboutPhotoVC.h"
 #import <MapKit/MapKit.h>
 #import "FlickrPhoto.h"
-#import "FlickrPhotoMapAnnotation.h"
 #import "UIImageView+AFNetworking.h"
 
 #define kExposureTime       @"ExposureTime"
@@ -13,10 +12,9 @@
 #define kCameraModel        @"camera"
 
 @interface AboutPhotoVC () <MKMapViewDelegate, CLLocationManagerDelegate>
-@property (strong, nonatomic) FlickrPhotoMapAnnotation *mapAnnotation;
+@property (strong, nonatomic) FlickrPhoto *mapAnnotation;
 @property (strong, nonatomic) IBOutlet UILabel *authorName;
 @property (strong, nonatomic) IBOutlet UIImageView *buddyicon;
-
 @property (strong, nonatomic) IBOutlet UILabel *cameraModel;
 @property (strong, nonatomic) IBOutlet UILabel *cameraSubtitle;
 @property (strong, nonatomic) IBOutlet UILabel *apertureLabel;
@@ -24,6 +22,8 @@
 @property (strong, nonatomic) IBOutlet UILabel *isoLabel;
 @property (strong, nonatomic) IBOutlet UILabel *flashLabel;
 @property (strong, nonatomic) IBOutlet UILabel *focalLengthLabel;
+@property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
+@property (strong, nonatomic) IBOutlet UIView *containerView;
 
 
 @end
@@ -41,7 +41,11 @@
     [self.buddyicon setImageWithURL:[NSURL URLWithString:iconURL]
                    placeholderImage:[UIImage imageNamed:@"placeholder-image"]];
     
+        
     self.authorName.text = [self.photo.author valueForKey:@"author_name"];
+    
+    self.containerView.layer.cornerRadius = 5.f;
+    
     
 
     [self showExifInfo];
@@ -72,7 +76,7 @@
 
 - (void)addAnnotation
 {
-    self.mapAnnotation = [[FlickrPhotoMapAnnotation alloc] init];
+    self.mapAnnotation = [[FlickrPhoto alloc] init];
     self.mapAnnotation.coordinate = self.photo.coordinate;
     self.mapAnnotation.title = self.photo.title;
     

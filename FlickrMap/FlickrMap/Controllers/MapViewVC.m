@@ -1,21 +1,22 @@
 #import "MapViewVC.h"
 #import <MapKit/MapKit.h>
 #import "LocationManager.h"
-#import "StartViewController.h"
 #import "FlickrPhoto.h"
-#import "FlickrPhotoMapAnnotation.h"
 #import "UIImageView+AFNetworking.h"
 #import "FlickrAPI.h"
 #import "FlickrPhotoDetailVC.h"
+#import "SessionManager.h"
+
+static BOOL firstLocationHasBeenRetrieved = NO;
 
 @interface MapViewVC () <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
-@property (strong, nonatomic) LocationManager *locationManager;
-@property (strong, nonatomic) StartViewController *vc;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (assign, nonatomic) CLLocationCoordinate2D userLocation;
 @property (strong, nonatomic) FlickrAPI *flickrAPI;
 @property (strong, nonatomic) SessionManager *sessionManager;
 @property (strong, nonatomic) NSMutableDictionary *dict;
-@property (copy, nonatomic) NSArray<FlickrPhotoMapAnnotation *> *mapAnnotations;
+@property (copy, nonatomic) NSArray<FlickrPhoto *> *mapAnnotations;
 @property (strong, nonatomic) FlickrPhotoDetailVC *photoDetailVC;
 @end
 
@@ -30,36 +31,54 @@
 {
     [super viewDidLoad];
     self.photoDetailVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FlickrPhotoDetailVC"];
-    self.vc = [[StartViewController alloc] init];
     [self.mapView setShowsUserLocation:YES];
     self.flickrAPI = [[FlickrAPI alloc] init];
     self.mapAnnotations = [[NSArray alloc] init];
-    
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
 
 
 
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (!firstLocationHasBeenRetrieved) {
+        if ([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)])
+            [self.locationManager requestWhenInUseAuthorization];
+        self.mapView.showsUserLocation = NO;
+    }
+}
 
 
 #pragma mark - MKMapViewDelegate
 
 - (void)mapView:(MKMapView *)mapView annotationView:(MKAnnotationView *)view calloutAccessoryControlTapped:(UIControl *)control {
     NSString *originalPhotoURL = nil;
-    if ([view.annotation isKindOfClass:[FlickrPhotoMapAnnotation class]]) {
-        originalPhotoURL = [(FlickrPhotoMapAnnotation*)view.annotation bigImageURL];
+    if ([view.annotation isKindOfClass:[FlickrPhoto class]]) {
+        originalPhotoURL = [(FlickrPhoto*)view.annotation bigImageURL];
     }
     
     if (originalPhotoURL) {
         
-        FlickrPhotoMapAnnotation *mapAnnotation = (FlickrPhotoMapAnnotation *)view.annotation;
+        FlickrPhoto *mapAnnotation = (FlickrPhoto *)view.annotation;
         UIImageView *imageView = [[UIImageView alloc] init];
-        [imageView setImageWithURL:[NSURL URLWithString:originalPhotoURL] placeholderImage:[UIImage imageNamed:@"placeholder-image"]];
         
-        mapAnnotation.photo.cashedBigImage = mapAnnotation.cashedBigImage = imageView.image;
+        NSURLRequest *request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:originalPhotoURL]];
+        
+        [imageView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, UIImage * _Nonnull image) {
+            
+            mapAnnotation.cashedBigImage = image;
+        
+        } failure:^(NSURLRequest * _Nonnull request, NSHTTPURLResponse * _Nullable response, NSError * _Nonnull error) {
+            NSLog(@"error %@", [error localizedDescription]);
+        }];
+        
+        
         [self performSegueWithIdentifier:@"showPhotoDetailFromMap" sender:mapAnnotation];
         
-        //self.selectedFlickrPhoto = mapAnnotation;
         
 
         
@@ -92,6 +111,20 @@
 - (void)mapView:(MKMapView *)mapView
     didUpdateUserLocation:(MKUserLocation *)userLocation
 {
+    
+    self.userLocation = userLocation.coordinate;
+    [self.mapView setCenterCoordinate:userLocation.coordinate animated:YES];
+    if (!firstLocationHasBeenRetrieved) {
+        firstLocationHasBeenRetrieved = YES;
+        self.mapView.showsUserLocation = NO;
+        self.mapView.userTrackingMode = MKUserTrackingModeNone;
+        
+        [self updateFlickrImagesInMap];
+    }
+    
+    
+    
+    
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(userLocation.coordinate, 800, 800);
     [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
 }
@@ -115,8 +148,8 @@
 
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view.leftCalloutAccessoryView isKindOfClass:[UIButton class]]) {
-        if ([view.annotation isKindOfClass:[FlickrPhotoMapAnnotation class]]) {
-            FlickrPhotoMapAnnotation *mapAnnotation = (FlickrPhotoMapAnnotation *)view.annotation;
+        if ([view.annotation isKindOfClass:[FlickrPhoto class]]) {
+            FlickrPhoto *mapAnnotation = (FlickrPhoto *)view.annotation;
             UIImage *image = mapAnnotation.cashedThumbImage;
             UIButton *entryButton = (UIButton *)view.leftCalloutAccessoryView;
             [entryButton setImage:image forState:UIControlStateNormal];
@@ -125,7 +158,13 @@
     }
 }
 
-
+- (void) mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    if ([view.leftCalloutAccessoryView isKindOfClass:[UIButton class]]) {
+        view.leftCalloutAccessoryView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
+        UIButton * entryButton = (UIButton *) view.leftCalloutAccessoryView;
+        [entryButton setImage:nil forState:UIControlStateNormal];
+    }
+}
 
 
 
@@ -147,7 +186,7 @@
     NSDictionary *dict = entries[@"photos"];
     NSArray *photos = dict[@"photo"];
     for (id obj in photos) {
-        FlickrPhotoMapAnnotation *mapAnnotation = [[FlickrPhotoMapAnnotation alloc] initValuesFromDictionary:obj];
+        FlickrPhoto *mapAnnotation = [[FlickrPhoto alloc] initValuesFromDictionary:obj];
         
         if (mapAnnotation) {
              [annotations addObject:mapAnnotation];
@@ -162,7 +201,7 @@
 - (void)updateFlickrImagesInMap {
     
     for (id<MKAnnotation> obj in self.mapView.annotations) {
-        if ([obj isKindOfClass:[FlickrPhotoMapAnnotation class]]) {
+        if ([obj isKindOfClass:[FlickrPhoto class]]) {
             [self.mapView removeAnnotation:obj];
         }
     }
@@ -184,13 +223,45 @@
 
 
 
-- (CLLocationCoordinate2D) getBottomLeftCornerOfMap {
+- (CLLocationCoordinate2D)getBottomLeftCornerOfMap
+{
     return [self.mapView convertPoint:CGPointMake(0, self.mapView.frame.size.height) toCoordinateFromView:self.mapView];
 }
 
-- (CLLocationCoordinate2D) getTopRightCornerOfMap {
+- (CLLocationCoordinate2D)getTopRightCornerOfMap
+{
     return [self.mapView convertPoint:CGPointMake(self.mapView.frame.size.width, 0) toCoordinateFromView:self.mapView];
 }
+
+
+- (void)showAlertWithMessage:(NSString *)message isError:(BOOL)error
+{
+    NSString *title = @"Warning";
+    NSString *cancelButton = @"Ok";
+    
+    if (floor(NSFoundationVersionNumber) <= NSFoundationVersionNumber_iOS_8_4) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                            message:message
+                                                           delegate:self
+                                                  cancelButtonTitle:cancelButton
+                                                  otherButtonTitles:nil];
+        [alertView show];
+        
+    } else {
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title
+                                                                                 message:message
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:cancelButton
+                                                               style:UIAlertActionStyleCancel handler:nil];
+        
+        [alertController addAction:cancelAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+    
+}
+
+
 
 #pragma mark - Navigations
 
@@ -198,11 +269,44 @@
 {
     if ([[segue identifier] isEqualToString:@"showPhotoDetailFromMap"]) {
         self.photoDetailVC = segue.destinationViewController;
-        FlickrPhotoMapAnnotation *mapAnnotation = sender;
-        self.photoDetailVC.photo = mapAnnotation.photo;
+        FlickrPhoto *mapAnnotation = sender;
+        self.photoDetailVC.photo = mapAnnotation;
     }
 }
 
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
+{
+    //[self closeLoadingAlert];
+    if (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusAuthorizedWhenInUse) {
+        [self.locationManager startUpdatingLocation];
+        self.mapView.showsUserLocation = YES;
+    } else if (status == kCLAuthorizationStatusRestricted) {
+        [self showAlertWithMessage:@"Unable to retrieve your location." isError:YES];
+    } else if (status == kCLAuthorizationStatusDenied) {
+        [self showAlertWithMessage:@"You must authorize access to your location." isError:YES];
+    }
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    if (!locations || locations.count < 1) return;
+    [self.locationManager stopUpdatingLocation];
+    
+    self.userLocation = [(CLLocation *) [locations lastObject] coordinate];
+    [self.mapView setCenterCoordinate:self.userLocation animated:YES];
+    if (!firstLocationHasBeenRetrieved) {
+        firstLocationHasBeenRetrieved = YES;
+        self.mapView.showsUserLocation = NO;
+        self.mapView.userTrackingMode = MKUserTrackingModeNone;
+        
+        [self updateFlickrImagesInMap];
+        
+    }
+    
+}
 
 
 @end

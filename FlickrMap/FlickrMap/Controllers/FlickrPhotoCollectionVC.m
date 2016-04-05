@@ -6,7 +6,6 @@
 #import "FlickrPhotoDetailVC.h"
 #import "LoadingView.h"
 
-typedef void(^CompletionBlockWithImage)(UIImage *image, NSError *error);
 
 @interface FlickrPhotoCollectionVC () <UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UICollectionViewDelegate>
 @property (strong, nonatomic) NSDictionary<NSString *, FlickrPhoto *> *flickrPhotos;
@@ -68,6 +67,7 @@ static NSString * const reuseIdentifier = @"FlickrPhotoCell";
         self.photoDetailVC = segue.destinationViewController;
         FlickrPhotoCollectionViewCell *cell = sender;
         cell.photo.cashedThumbImage = cell.imageView.image;
+        self.photoDetailVC.image = cell.imageView.image;
         self.photoDetailVC.photo = cell.photo;
         self.photoDetailVC.photos = self.flickrPhotos;
 

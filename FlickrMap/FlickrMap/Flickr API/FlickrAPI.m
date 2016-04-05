@@ -1,7 +1,6 @@
 #import "FlickrAPI.h"
 #import "LocationManager.h"
 #import "SessionManager.h"
-#import "FlickrPhotoMapAnnotation.h"
 
 
 static NSString *const kFlickrAPIKey                        = @"99ebbf2885ed731a2dbed15ab554771a";
@@ -14,7 +13,7 @@ static NSString *const kFlickrApiKeyParameter               = @"api_key";
 static NSString *const kFlickrLatitudeParameter             = @"lat=";
 static NSString *const kFlickrLongitudeParameter            = @"lon=";
 static NSString *const kFlickrBoundingBoxParameter          = @"bbox";
-static NSString *const kFlickrPhotosExtras                  = @"extras=geo,url_t,url_o,url_m";
+static NSString *const kFlickrPhotosExtras                  = @"extras=geo,url_t,url_o,url_m,url_s,url_q";
 static NSString *const kFlickrPhotosRadiusParameter         = @"radius=";
 static NSString *const kFlickrPhotosRadiusUnitParameter     = @"radius_units=km";
 static NSString *const kFlickrPhotoIDParameter              = @"photo_id";

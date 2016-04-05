@@ -102,7 +102,7 @@
         
         if (obj != nil) {
             FlickrPhoto *photo = [[FlickrPhoto alloc] init];
-            photo.thumbImageUrl = obj[@"url_t"];
+            photo.thumbImageUrl = obj[@"url_q"];
             photo.bigImageURL = obj[@"url_m"];
             photo.title = obj[@"title"];
             float latitude = [obj[@"latitude"] floatValue];
@@ -118,6 +118,9 @@
     
     return result;
 }
+
+
+
 
 
 #pragma mark - Actions

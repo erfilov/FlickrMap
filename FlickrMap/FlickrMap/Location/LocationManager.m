@@ -28,7 +28,8 @@
 
 
 
-+ (instancetype)sharedInstance {
++ (instancetype)sharedInstance
+{
     
     static LocationManager *location = nil;
     if ([CLLocationManager locationServicesEnabled]) {
@@ -52,22 +53,11 @@
     return location;
 }
 
-- (void)startUpdatingLocationWithCompletionBlock:(LocationUpdateCompletionBlock)block {
+- (void)startUpdatingLocationWithCompletionBlock:(LocationUpdateCompletionBlock)block
+{
     self.completionBlock = block;
     [self.locationManager startUpdatingLocation];
 }
 
-- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
-    CLLocation *location = [locations lastObject];
-    self.completionBlock(location, nil);
-    [self.locationManager stopUpdatingLocation];
-}
-
-- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error {
-    if (error.code == kCLErrorDenied) {
-        self.completionBlock(nil, error);
-        [self.locationManager stopUpdatingLocation];
-    }
-}
 
 @end

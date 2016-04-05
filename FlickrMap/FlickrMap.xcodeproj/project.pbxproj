@@ -15,7 +15,6 @@
 		840E2C7C1C9B1AF300FE7E3B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 840E2C7A1C9B1AF300FE7E3B /* LaunchScreen.storyboard */; };
 		840E2D141C9DAC7600FE7E3B /* FlickrPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = 840E2D131C9DAC7600FE7E3B /* FlickrPhoto.m */; };
 		84BEEC561CA7B2F00000FCA9 /* FlickrAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BEEC551CA7B2F00000FCA9 /* FlickrAPI.m */; };
-		84BEEC591CA7B3000000FCA9 /* FlickrPhotoMapAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BEEC581CA7B3000000FCA9 /* FlickrPhotoMapAnnotation.m */; };
 		84BEEC621CA7B3110000FCA9 /* FlickrPhotoCollectionVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BEEC5B1CA7B3110000FCA9 /* FlickrPhotoCollectionVC.m */; };
 		84BEEC631CA7B3110000FCA9 /* FlickrPhotoDetailVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BEEC5D1CA7B3110000FCA9 /* FlickrPhotoDetailVC.m */; };
 		84BEEC641CA7B3110000FCA9 /* MapViewVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 84BEEC5F1CA7B3110000FCA9 /* MapViewVC.m */; };
@@ -44,8 +43,6 @@
 		840E2D131C9DAC7600FE7E3B /* FlickrPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlickrPhoto.m; path = Model/FlickrPhoto.m; sourceTree = "<group>"; };
 		84BEEC541CA7B2F00000FCA9 /* FlickrAPI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlickrAPI.h; path = "Flickr API/FlickrAPI.h"; sourceTree = "<group>"; };
 		84BEEC551CA7B2F00000FCA9 /* FlickrAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlickrAPI.m; path = "Flickr API/FlickrAPI.m"; sourceTree = "<group>"; };
-		84BEEC571CA7B3000000FCA9 /* FlickrPhotoMapAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlickrPhotoMapAnnotation.h; path = Model/FlickrPhotoMapAnnotation.h; sourceTree = "<group>"; };
-		84BEEC581CA7B3000000FCA9 /* FlickrPhotoMapAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlickrPhotoMapAnnotation.m; path = Model/FlickrPhotoMapAnnotation.m; sourceTree = "<group>"; };
 		84BEEC5A1CA7B3110000FCA9 /* FlickrPhotoCollectionVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlickrPhotoCollectionVC.h; path = Controllers/FlickrPhotoCollectionVC.h; sourceTree = "<group>"; };
 		84BEEC5B1CA7B3110000FCA9 /* FlickrPhotoCollectionVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FlickrPhotoCollectionVC.m; path = Controllers/FlickrPhotoCollectionVC.m; sourceTree = "<group>"; };
 		84BEEC5C1CA7B3110000FCA9 /* FlickrPhotoDetailVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FlickrPhotoDetailVC.h; path = Controllers/FlickrPhotoDetailVC.h; sourceTree = "<group>"; };
@@ -150,8 +147,6 @@
 			children = (
 				840E2D121C9DAC7600FE7E3B /* FlickrPhoto.h */,
 				840E2D131C9DAC7600FE7E3B /* FlickrPhoto.m */,
-				84BEEC571CA7B3000000FCA9 /* FlickrPhotoMapAnnotation.h */,
-				84BEEC581CA7B3000000FCA9 /* FlickrPhotoMapAnnotation.m */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -363,7 +358,6 @@
 				84D0408E1CA45A550085F33F /* SessionManager.m in Sources */,
 				84CEDDB71CA70F540021386F /* LoadingView.m in Sources */,
 				84BEEC651CA7B3110000FCA9 /* StartViewController.m in Sources */,
-				84BEEC591CA7B3000000FCA9 /* FlickrPhotoMapAnnotation.m in Sources */,
 				84BEEC561CA7B2F00000FCA9 /* FlickrAPI.m in Sources */,
 				84BEEC781CA80BA30000FCA9 /* AboutPhotoVC.m in Sources */,
 				84BEEC6B1CA7B32F0000FCA9 /* LocationManager.m in Sources */,
