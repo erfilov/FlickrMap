@@ -98,12 +98,17 @@ static BOOL firstLocationHasBeenRetrieved = NO;
         pinAnnotation = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier: nil];
         pinAnnotation.canShowCallout = YES;
         pinAnnotation.enabled = YES;
+        pinAnnotation.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
         
         pinAnnotation.leftCalloutAccessoryView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
         UIButton *entryButton = (UIButton *)pinAnnotation.leftCalloutAccessoryView;
         [entryButton.imageView setContentMode:UIViewContentModeScaleAspectFit];
+        
+
+    } else {
+        pinAnnotation.annotation = annotation;
     }
-    pinAnnotation.annotation = annotation;
+    
     
     return pinAnnotation;
 }
@@ -134,8 +139,6 @@ static BOOL firstLocationHasBeenRetrieved = NO;
 
 - (void)mapViewWillStartLocatingUser:(MKMapView *)mapView
 {
-    NSLog(@"mapViewWillStartLocatingUser");
-    
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(self.mapView.userLocation.coordinate, 800, 800);
     [self.mapView setRegion:[self.mapView regionThatFits:region] animated:YES];
 }
@@ -170,11 +173,11 @@ static BOOL firstLocationHasBeenRetrieved = NO;
 
 
 #pragma mark - Actions
-
-- (void)actionInfo:(UIButton *)sender
-{
-    NSLog(@"actionInfo");
-}
+//
+//- (void)showPhotoDetail:(UIButton *)sender
+//{
+//    [self performSegueWithIdentifier:@"showPhotoDetailFromMap" sender:sender];
+//}
 
 
 
@@ -279,7 +282,6 @@ static BOOL firstLocationHasBeenRetrieved = NO;
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
 {
-    //[self closeLoadingAlert];
     if (status == kCLAuthorizationStatusAuthorized || status == kCLAuthorizationStatusAuthorizedWhenInUse) {
         [self.locationManager startUpdatingLocation];
         self.mapView.showsUserLocation = YES;

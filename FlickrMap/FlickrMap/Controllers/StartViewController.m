@@ -7,6 +7,7 @@
 #import "SessionManager.h"
 #import "FlickrAPI.h"
 #import "LoadingView.h"
+#import "UIImage+Blur.h"
 
 
 
@@ -18,6 +19,8 @@
 @property (copy, nonatomic) NSString *searchText;
 @property (assign, nonatomic) CLLocationCoordinate2D coordinate;
 @property (strong, nonatomic) LoadingView *loadingView;
+@property (strong, nonatomic) IBOutlet UIImageView *backgroundImageView;
+@property (strong, nonatomic) IBOutlet UIView *bgViewButton;
 
 - (IBAction)actionSearch:(UIButton *)sender;
 @end
@@ -33,6 +36,7 @@
     
     self.flickrAPI = [[FlickrAPI alloc] init];
     self.loadingView = [[LoadingView alloc] init];
+    self.bgViewButton.layer.cornerRadius = 5.f;
     
     [[LocationManager sharedInstance]
      startUpdatingLocationWithCompletionBlock:^(CLLocation *location, NSError *error) {
@@ -91,6 +95,7 @@
         
     }];
 }
+
 
 
 #pragma mark - Actions

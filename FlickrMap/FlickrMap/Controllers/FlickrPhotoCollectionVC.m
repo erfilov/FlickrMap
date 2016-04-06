@@ -69,6 +69,8 @@ static NSString * const reuseIdentifier = @"FlickrPhotoCollectionViewCell";
     if (kind == UICollectionElementKindSectionFooter) {
         FlickrPhotoFooterView *footerview = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionFooter withReuseIdentifier:@"FlickrPhotoFooterView" forIndexPath:indexPath];
         
+        footerview.bgView.layer.cornerRadius = 5.f;
+        
         [footerview.nextButton addTarget:self action:@selector(loadNextPhotos) forControlEvents:UIControlEventTouchUpInside];
         
         reusableview = footerview;

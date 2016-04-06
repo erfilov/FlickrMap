@@ -86,7 +86,7 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
     page:(NSInteger)pageNumber
     withCompletionBlock:(CompletionBlock)completionBlock
 {
-    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@&%@%@&%@%@&%@&page=%d&text=%@",
+    NSString *urlString = [NSString stringWithFormat:@"%@%@&%@&%@=%@&%@&%@%@&%@%@&%@&page=%ld&text=%@",
                            kFlickrBaseRESTURL,
                            kFlickrPhotosSearchMethod,
                            kFlickrJSONFormat,
@@ -97,9 +97,8 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrPhotosMaxPhotosToRetrieve,
                            kFlickrPhotoHasGeoParameter, kFlickrPhotoHasGeoEnable,
                            kFlickrPhotosFlickrNoJSONCallback,
-                           pageNumber,
+                           (long)pageNumber,
                            text];
-    NSLog(@"%@", urlString);
     
     [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
@@ -153,7 +152,6 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            photoID,
                            kFlickrPhotosFlickrNoJSONCallback];
     
-    NSLog(@"%@", urlString);
     
     [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         

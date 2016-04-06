@@ -50,18 +50,13 @@
         [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAction
                                                       target:self
                                                       action:@selector(sharePhoto:)];
-    
-    UIBarButtonItem *favoritesButton =
-        [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorites-icon"]
-                                         style:UIBarButtonItemStylePlain
-                                        target:self
-                                        action:@selector(addToFavorites:)];
+
     
     UIButton *buttonInfo = [UIButton buttonWithType:UIButtonTypeInfoLight];
     UIBarButtonItem *aboutButton = [[UIBarButtonItem alloc] initWithCustomView:buttonInfo];
     [buttonInfo addTarget:self action:@selector(actionAbout:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.navigationItem.rightBarButtonItems = @[aboutButton, favoritesButton, shareButton];
+    self.navigationItem.rightBarButtonItems = @[aboutButton, shareButton];
     
     [self getInfoForPhoto:self.photo.photoID];
     [self getExifForPhoto:self.photo.photoID];
@@ -178,10 +173,6 @@
 
 #pragma mark - Actions
 
-- (void)addToFavorites:(UIButton *)sender
-{
-    NSLog(@"addToFavorites");
-}
 
 - (void)actionAbout:(UIButton *)sender
 {
@@ -190,8 +181,6 @@
     
     [self.navigationController presentViewController:vc animated:YES completion:nil];
     
-    
-    NSLog(@"actionAbout");
 }
 
 - (void)sharePhoto:(UIBarButtonItem *)sender {
