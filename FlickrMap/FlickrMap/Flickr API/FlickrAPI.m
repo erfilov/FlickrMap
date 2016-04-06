@@ -100,6 +100,10 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            pageNumber,
                            text];
     NSLog(@"%@", urlString);
+
+    //CR :
+    //All stuff that was put into urlString should be used as parameter dictionary.
+    //AFNetworking has request serializers to compose required string.
     
     [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
         
@@ -176,7 +180,10 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
     NSArray *photos = dict[@"photo"];
     
     [photos enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        
+
+        //CR :
+        // when you enumerate array, obj would never be nil (it's impossible to put nil into array.)
+        // it's even is marked as _Nonnull
         if (obj != nil) {
             FlickrPhoto *photo = [[FlickrPhoto alloc] init];
             photo.thumbImageUrl = obj[@"url_q"];

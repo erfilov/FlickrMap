@@ -11,6 +11,10 @@
     //  Setting up Gaussian Blur
     CIFilter *filter = [CIFilter filterWithName:@"CIGaussianBlur"];
     [filter setValue:inputImage forKey:kCIInputImageKey];
+    //CR :
+    // code
+    // [filter setValue:@5.f forKey:kCIInputRadiusKey];
+    // does exactly the same, but seems much better.
     [filter setValue:[NSNumber numberWithFloat:5.0f] forKey:@"inputRadius"];
     CIImage *result = [filter valueForKey:kCIOutputImageKey];
     
