@@ -3,6 +3,10 @@
 #import "FlickrPhoto.h"
 #import "UIImageView+AFNetworking.h"
 
+//CR :
+// instead of #define better use something like
+// static NSString *const kExposureTime = @"ExposureTime";
+
 #define kExposureTime       @"ExposureTime"
 #define kAperture           @"FNumber"
 #define kISO                @"ISO"
@@ -114,6 +118,9 @@
 
 - (IBAction)actionClose:(UIBarButtonItem *)sender
 {
+    //CR :
+    //viewController should not dismiss itself.
+    // check this (with the question above): http://stackoverflow.com/a/24689553
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

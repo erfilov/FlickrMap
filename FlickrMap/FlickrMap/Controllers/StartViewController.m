@@ -88,6 +88,13 @@
     [self.flickrAPI requestWithText:string page:1 withCompletionBlock:^(NSDictionary *result, NSError *error) {
         
         photoCollectionVC.photos = [self.flickrAPI generateArrayUrlFromResponseObject:result];
+
+        //CR :
+        // again some strange logic with this session manager:
+        // at this moment self.sessionManager is nil
+        // also it's a singleton
+        // and then, you initialize FlickrAPI class inside photoCollectionVC object
+        // which also has a reference to session manager.
         photoCollectionVC.sessionManager = self.sessionManager;
         photoCollectionVC.titleNavController = self.searchText;
         [self.loadingView hideLoadingView];
