@@ -1,6 +1,6 @@
 #import "FlickrAPI.h"
 #import "LocationManager.h"
-#import "SessionManager.h"
+#import <AFHTTPSessionManager.h>
 #import "FlickrPhoto.h"
 
 
@@ -29,6 +29,7 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
 
 
 @interface FlickrAPI ()
+@property (strong, nonnull) AFHTTPSessionManager *sessionManager;
 @end
 
 
@@ -41,7 +42,7 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
 {
     self = [super init];
     if (self) {
-        self.sessionManager = [SessionManager sharedManager];
+        self.sessionManager = [AFHTTPSessionManager manager];
     }
     return self;
 }
@@ -65,20 +66,19 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrPerPageParameter, kFlickrPhotosMaxPhotosForMap,
                            kFlickrPhotosFlickrNoJSONCallback];
     
-    
-    [self.sessionManager.manager GET:urlString
-                          parameters:nil
-                            progress:nil
-                             success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                                  
-                                  if (responseObject != nil) {
-                                      completionBlock(responseObject, nil);
-                                  }
-                                  
-                              } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                                  NSLog(@"Error: %@", error);
-                                  completionBlock(nil, error);
-                              }];
+    [self.sessionManager GET:urlString
+                  parameters:nil
+                    progress:nil
+                     success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                         
+                         if (responseObject != nil) {
+                             completionBlock(responseObject, nil);
+                         }
+                     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                         NSLog(@"Error: %@", error);
+                         completionBlock(nil, error);
+                     }];
+
     
 }
 
@@ -100,16 +100,17 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            (long)pageNumber,
                            text];
     
-    [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        if (responseObject != nil) {
-            completionBlock(responseObject, nil);
-        }
-
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionBlock(nil, error);
-    }];
+    [self.sessionManager GET:urlString
+                  parameters:nil
+                    progress:nil
+                     success:^(NSURLSessionTask *task, id responseObject) {
+                         if (responseObject != nil) {
+                             completionBlock(responseObject, nil);
+                         }
+                     } failure:^(NSURLSessionTask *operation, NSError *error) {
+                         NSLog(@"Error: %@", error);
+                         completionBlock(nil, error);
+                     }];
 }
 
 - (void)loadInfoForPhotoID:(NSString *)photoID
@@ -127,16 +128,17 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
     
     
     
-    [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        if (responseObject != nil) {
-            completionBlock(responseObject, nil);
-        }
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionBlock(nil, error);
-    }];
+    [self.sessionManager GET:urlString
+                  parameters:nil
+                    progress:nil
+                     success:^(NSURLSessionTask *task, id responseObject) {
+                         if (responseObject != nil) {
+                             completionBlock(responseObject, nil);
+                         }
+                     } failure:^(NSURLSessionTask *operation, NSError *error) {
+                         NSLog(@"Error: %@", error);
+                         completionBlock(nil, error);
+                     }];
 }
 
 - (void)loadExifForPhotoID:(NSString *)photoID
@@ -153,16 +155,17 @@ static NSString *const kFlickrPhotosFlickrNoJSONCallback    = @"nojsoncallback=1
                            kFlickrPhotosFlickrNoJSONCallback];
     
     
-    [self.sessionManager.manager GET:urlString parameters:nil progress:nil success:^(NSURLSessionTask *task, id responseObject) {
-        
-        if (responseObject != nil) {
-            completionBlock(responseObject, nil);
-        }
-        
-    } failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
-        completionBlock(nil, error);
-    }];
+    [self.sessionManager GET:urlString
+                  parameters:nil
+                    progress:nil
+                     success:^(NSURLSessionTask *task, id responseObject) {
+                         if (responseObject != nil) {
+                             completionBlock(responseObject, nil);
+                         }
+                     } failure:^(NSURLSessionTask *operation, NSError *error) {
+                         NSLog(@"Error: %@", error);
+                         completionBlock(nil, error);
+                     }];
 
 }
 

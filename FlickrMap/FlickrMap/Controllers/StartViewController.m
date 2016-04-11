@@ -4,7 +4,6 @@
 #import "FlickrPhoto.h"
 #import <CoreLocation/CoreLocation.h>
 #import "FlickrPhotoCollectionVC.h"
-#import "SessionManager.h"
 #import "FlickrAPI.h"
 #import "LoadingView.h"
 #import "UIImage+Blur.h"
@@ -13,7 +12,6 @@
 
 
 @interface StartViewController () <UITextFieldDelegate>
-@property (strong, nonatomic) SessionManager *sessionManager;
 @property (strong, nonatomic) FlickrAPI *flickrAPI;
 @property (strong, nonatomic) IBOutlet UITextField *searchTextField;
 @property (copy, nonatomic) NSString *searchText;
@@ -98,7 +96,11 @@
         // also it's a singleton
         // and then, you initialize FlickrAPI class inside photoCollectionVC object
         // which also has a reference to session manager.
-        photoCollectionVC.sessionManager = self.sessionManager;
+        
+        /*
+         *  photoCollectionVC.sessionManager = self.sessionManager;  - removed
+         */
+        
         photoCollectionVC.titleNavController = self.searchText;
         [self.loadingView hideLoadingView];
         [self.navigationController pushViewController:photoCollectionVC animated:YES];

@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "LocationManager.h"
-@class SessionManager;
+
 
 //CR :
 // there are no single place in code where you've checked for error,
@@ -16,7 +16,8 @@ typedef void(^CompletionBlock)(NSDictionary *result, NSError *error);
 // Also, purpose of SessionManager class is not very clear for me.
 // In FlickrAPI all calls are like 'self.sessionManager.manager GET ...',
 // so you could just use 'AFHTTPSessionManager' here
-@property (strong, nonatomic) SessionManager *sessionManager;
+
+//@property (strong, nonatomic) SessionManager *sessionManager;
 
 - (NSArray *)generateArrayUrlFromResponseObject:(NSDictionary *)responseObject;
 

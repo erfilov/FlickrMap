@@ -2,7 +2,6 @@
 #import "FlickrPhotoCollectionViewCell.h"
 #import "FlickrPhoto.h"
 #import <UIImageView+AFNetworking.h>
-#import "SessionManager.h"
 #import "FlickrPhotoDetailVC.h"
 #import "LoadingView.h"
 #import "FlickrPhotoFooterView.h"

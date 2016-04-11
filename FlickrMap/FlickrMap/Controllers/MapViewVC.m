@@ -5,7 +5,6 @@
 #import "UIImageView+AFNetworking.h"
 #import "FlickrAPI.h"
 #import "FlickrPhotoDetailVC.h"
-#import "SessionManager.h"
 
 static BOOL firstLocationHasBeenRetrieved = NO;
 
@@ -14,7 +13,6 @@ static BOOL firstLocationHasBeenRetrieved = NO;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (assign, nonatomic) CLLocationCoordinate2D userLocation;
 @property (strong, nonatomic) FlickrAPI *flickrAPI;
-@property (strong, nonatomic) SessionManager *sessionManager;
 @property (strong, nonatomic) NSMutableDictionary *dict;
 @property (copy, nonatomic) NSArray<FlickrPhoto *> *mapAnnotations;
 @property (strong, nonatomic) FlickrPhotoDetailVC *photoDetailVC;

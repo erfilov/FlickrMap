@@ -7,13 +7,23 @@
 // instead of #define better use something like
 // static NSString *const kExposureTime = @"ExposureTime";
 
-#define kExposureTime       @"ExposureTime"
-#define kAperture           @"FNumber"
-#define kISO                @"ISO"
-#define kFlash              @"Flash"
-#define kFocalLength        @"FocalLength"
-#define kLensModel          @"LensModel"
-#define kCameraModel        @"camera"
+//#define kExposureTime       @"ExposureTime"
+//#define kAperture           @"FNumber"
+//#define kISO                @"ISO"
+//#define kFlash              @"Flash"
+//#define kFocalLength        @"FocalLength"
+//#define kLensModel          @"LensModel"
+//#define kCameraModel        @"camera"
+
+static NSString *const kExposureTime = @"ExposureTime";
+static NSString *const kAperture = @"FNumber";
+static NSString *const kISO = @"ISO";
+static NSString *const kFlash = @"Flash";
+static NSString *const kFocalLength = @"FocalLength";
+static NSString *const kLensModel = @"LensModel";
+static NSString *const kCameraModel = @"camera";
+
+
 
 @interface AboutPhotoVC () <MKMapViewDelegate, CLLocationManagerDelegate>
 @property (strong, nonatomic) FlickrPhoto *mapAnnotation;
@@ -122,5 +132,7 @@
     //viewController should not dismiss itself.
     // check this (with the question above): http://stackoverflow.com/a/24689553
     [self dismissViewControllerAnimated:YES completion:nil];
+    
+
 }
 @end

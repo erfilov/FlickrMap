@@ -1,20 +1,19 @@
 #import "FlickrPhotoDetailVC.h"
 #import "UIImage+Blur.h"
 #import "LoadingView.h"
-#import "SessionManager.h"
 #import "FlickrPhoto.h"
 #import "UIImageView+AFNetworking.h"
 #import "FlickrAPI.h"
 #import "AboutPhotoVC.h"
 
 
-#define kExposureTime       @"ExposureTime"
-#define kAperture           @"FNumber"
-#define kISO                @"ISO"
-#define kFlash              @"Flash"
-#define kFocalLength        @"FocalLength"
-#define kLensModel          @"LensModel"
-#define kCameraModel        @"camera"
+static NSString *const kExposureTime = @"ExposureTime";
+static NSString *const kAperture = @"FNumber";
+static NSString *const kISO = @"ISO";
+static NSString *const kFlash = @"Flash";
+static NSString *const kFocalLength = @"FocalLength";
+static NSString *const kLensModel = @"LensModel";
+static NSString *const kCameraModel = @"camera";
 
 
 @interface FlickrPhotoDetailVC ()
@@ -38,7 +37,6 @@
 {
     [super viewDidLoad];
     
-    self.sessionManager = [SessionManager sharedManager];
     self.flickrAPI = [[FlickrAPI alloc] init];
     self.loadingView = [[LoadingView alloc] init];
     UIImage *blurImage = [[UIImage alloc] init];
