@@ -115,4 +115,16 @@
     NSString *requestString = [self convertToCorrectFormatText:self.searchTextField.text];
     [self getImagesForText:requestString];
 }
+
+#pragma mark - Touches
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint touchPoint = [touch locationInView:self.searchTextField];
+    if (!CGRectContainsPoint(self.searchTextField.frame, touchPoint)) {
+        [self.searchTextField resignFirstResponder];
+    }
+}
+
 @end
