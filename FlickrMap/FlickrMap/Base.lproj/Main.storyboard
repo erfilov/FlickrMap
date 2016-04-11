@@ -469,7 +469,7 @@
                                             <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5oK-wf-C5C">
                                                 <rect key="frame" x="156" y="8" width="140" height="114"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="flash-icon" translatesAutoresizingMaskIntoConstraints="NO" id="0Cy-Gt-PX6">
+                                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="flash-icon" translatesAutoresizingMaskIntoConstraints="NO" id="0Cy-Gt-PX6">
                                                         <rect key="frame" x="8" y="50" width="20" height="45"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="45" id="S5M-Fr-haJ"/>

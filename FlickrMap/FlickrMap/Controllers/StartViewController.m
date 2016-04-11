@@ -44,6 +44,9 @@
          NSLog(@"location - %@", location);
          
      }];
+    
+    [self configureNavTitle];
+
 
 }
 
@@ -101,6 +104,12 @@
         [self.navigationController pushViewController:photoCollectionVC animated:YES];
         
     }];
+}
+
+- (void)configureNavTitle
+{
+    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"flickrmap-logo"]];
+    self.navigationItem.titleView = logo;
 }
 
 
