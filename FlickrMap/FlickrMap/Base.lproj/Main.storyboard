@@ -31,24 +31,27 @@
                                 </connections>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e3y-3F-ikx">
-                                <rect key="frame" x="105" y="214" width="110" height="35"/>
+                                <rect key="frame" x="120" y="214" width="80" height="80"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bF5-MY-azR">
-                                        <rect key="frame" x="0.0" y="0.0" width="110" height="35"/>
-                                        <state key="normal" title="Search">
+                                        <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                        <state key="normal" title="search">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <state key="highlighted">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                         <connections>
                                             <action selector="actionSearch:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3V5-dS-01t"/>
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" red="1" green="0.0" blue="0.51764705882352935" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="bF5-MY-azR" secondAttribute="trailing" id="0c2-NJ-3Vu"/>
                                     <constraint firstAttribute="bottom" secondItem="bF5-MY-azR" secondAttribute="bottom" id="AWd-mM-oy0"/>
-                                    <constraint firstAttribute="width" constant="110" id="Fwq-kh-qQh"/>
-                                    <constraint firstAttribute="height" constant="35" id="Wn4-V5-Xme"/>
+                                    <constraint firstAttribute="width" constant="80" id="Fwq-kh-qQh"/>
+                                    <constraint firstAttribute="height" constant="80" id="Wn4-V5-Xme"/>
                                     <constraint firstItem="bF5-MY-azR" firstAttribute="leading" secondItem="e3y-3F-ikx" secondAttribute="leading" id="XCD-gQ-KFh"/>
                                     <constraint firstItem="bF5-MY-azR" firstAttribute="top" secondItem="e3y-3F-ikx" secondAttribute="top" id="u0s-AX-5eb"/>
                                 </constraints>
@@ -469,7 +472,7 @@
                                             <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5oK-wf-C5C">
                                                 <rect key="frame" x="156" y="8" width="140" height="114"/>
                                                 <subviews>
-                                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="flash-icon" translatesAutoresizingMaskIntoConstraints="NO" id="0Cy-Gt-PX6">
+                                                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="flash-icon" translatesAutoresizingMaskIntoConstraints="NO" id="0Cy-Gt-PX6">
                                                         <rect key="frame" x="8" y="50" width="20" height="45"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="45" id="S5M-Fr-haJ"/>

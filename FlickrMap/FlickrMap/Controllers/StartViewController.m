@@ -34,7 +34,6 @@
     
     self.flickrAPI = [[FlickrAPI alloc] init];
     self.loadingView = [[LoadingView alloc] init];
-    self.bgViewButton.layer.cornerRadius = 5.f;
     
     [[LocationManager sharedInstance]
      startUpdatingLocationWithCompletionBlock:^(CLLocation *location, NSError *error) {
@@ -43,6 +42,7 @@
          
      }];
     
+    [self configureSearchButton];
     [self configureNavTitle];
 
 
@@ -83,6 +83,7 @@
 - (void)getImagesForText:(NSString *)string
 {
     [self.loadingView showLoadingViewOnView:self.view];
+    [self.searchTextField resignFirstResponder];
     
     FlickrPhotoCollectionVC *photoCollectionVC = [self.storyboard instantiateViewControllerWithIdentifier:@"FlickrPhotoCollectionVC"];
     
@@ -112,6 +113,11 @@
 {
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"flickrmap-logo"]];
     self.navigationItem.titleView = logo;
+}
+
+- (void)configureSearchButton
+{
+    self.bgViewButton.layer.cornerRadius = self.bgViewButton.frame.size.width / 2;
 }
 
 
